@@ -1,26 +1,19 @@
+# Dockerfile cho React frontend
 FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy package files
+# Copy package.json và package-lock.json trước để cache npm install
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci
+RUN npm install
 
-# Copy source code
+# Copy toàn bộ code
 COPY . .
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nodejs -u 1001
+# Build app cho production (optional, nếu dev thì chỉ cần npm start)
+# RUN npm run build
 
-# Change ownership
-RUN chown -R nodejs:nodejs /app
-USER nodejs
-
-# Expose port
 EXPOSE 3000
 
-# Start the development server
-CMD ["npm", "start"] 
+CMD ["npm", "start"]

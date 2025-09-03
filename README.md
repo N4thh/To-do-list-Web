@@ -130,17 +130,17 @@ npm start
 
 ## Tính năng
 
-- ✅ Authentication (JWT)
-- ✅ CRUD Tasks
-- ✅ Task filtering & search
-- ✅ Task priorities
-- ✅ Task status management
-- ✅ Bulk operations
-- ✅ User profiles
-- ✅ Database relationships
-- ✅ API validation
-- ✅ Error handling
-- ✅ Docker containerization
+-  Authentication (JWT)
+-  CRUD Tasks
+-  Task filtering & search
+-  Task priorities
+-  Task status management
+-  Bulk operations
+-  User profiles
+-  Database relationships
+-  API validation
+-  Error handling
+-  Docker containerization
 
 ## Troubleshooting
 
