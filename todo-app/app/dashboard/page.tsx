@@ -1,9 +1,16 @@
-import React from 'react'
+import { getCurrentUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-const page = () => {
+export default async function Dashboard() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/login"); 
+  }
+
   return (
-    <h1>Task will appear here</h1>
-  )
+    <div>
+      <h1>Welcome {user.username}</h1>
+    </div>
+  );
 }
-
-export default page

@@ -1,14 +1,12 @@
 'use client'
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
-import Image from 'next/image'
-import Link from 'next/link'
 
 const RegisterPage = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    fName: '',
+    lName: '',
     userName: '',
     email: '',
     password: '',
@@ -22,10 +20,7 @@ const RegisterPage = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => 
-      ({ ...prev,
-         [name]: value 
-      }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -69,16 +64,14 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="flex flex-col md:flex-row max-w-6xl w-full bg-white shadow-lg rounded-lg overflow-hidden">
         {/* Left image */}
-        <div className="md:w-1/2 w-full h-64 md:h-auto relative">
-          <Image
-            src="/register/MainPic.png"
-            alt="MainPic"
-            width={300}
-            height={200}
-            className="object-cover mt-20 mx-10"
+        <div className="md:w-1/2 w-full h-64 md:h-auto">
+          <img
+            src="/illustration.png"
+            alt="Illustration"
+            className="w-full h-full object-cover"
           />
         </div>
 
@@ -92,27 +85,27 @@ const RegisterPage = () => {
           <form onSubmit={handleSubmit} className="space-y-4 w-full">
             {/* First Name */}
             <input
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF6767] placeholder-gray-400 text-black"
-              name="firstName"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="fName"
               type="text"
-              value={formData.firstName}
+              value={formData.fName}
               onChange={handleChange}
               placeholder="Enter First Name"
             />
 
             {/* Last Name */}
             <input
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF6767] placeholder-gray-400 text-black"
-              name="lastName"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="lName"
               type="text"
-              value={formData.lastName}
+              value={formData.lName}
               onChange={handleChange}
               placeholder="Enter Last Name"
             />
 
             {/* Username */}
             <input
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF6767] placeholder-gray-400 text-black"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               name="userName"
               type="text"
               value={formData.userName}
@@ -122,7 +115,7 @@ const RegisterPage = () => {
 
             {/* Email */}
             <input
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF6767] placeholder-gray-400 text-black"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               name="email"
               type="email"
               value={formData.email}
@@ -132,7 +125,7 @@ const RegisterPage = () => {
 
             {/* Password */}
             <input
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF6767] placeholder-gray-400 text-black"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               name="password"
               type="password"
               value={formData.password}
@@ -142,7 +135,7 @@ const RegisterPage = () => {
 
             {/* Confirm Password */}
             <input
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#FF6767] placeholder-gray-400 text-black"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               name="confirmPassword"
               type="password"
               value={formData.confirmPassword}
@@ -167,13 +160,10 @@ const RegisterPage = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-[#FF6767] hover:bg-[#f56868] text-white py-2 px-4 rounded-md disabled:opacity-50 transition"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md disabled:opacity-50 transition"
             >
               {isLoading ? "Registering..." : "Register"}
             </button>
-            <p className='text-black'>
-              Already have an account? <Link href="/login" className="text-blue-500">Sign In</Link>
-            </p>
           </form>
         </div>
       </div>
