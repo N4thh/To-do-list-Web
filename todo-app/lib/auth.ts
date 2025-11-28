@@ -1,21 +1,29 @@
-// app/lib/auth.ts
-
+//lib/auth.ts
 import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
 const prisma = new PrismaClient();
 
-export async function getCurrentUser() {
+export async function getCurrentUser(reqHeaders?: Headers) {
   try {
-    //getcokkie
+    // 1. Lấy token từ cookie
     const cookieStore = cookies();
-    const token = (await cookieStore).get("authToken")?.value;
+    let token = (await cookieStore).get("authToken")?.value;
+
+    // 2. Nếu không có cookie, thử lấy từ Authorization header
+    if (!token && reqHeaders) {
+      const authHeader = reqHeaders.get("Authorization");
+      if (authHeader?.startsWith("Bearer ")) {
+        token = authHeader.split(" ")[1];
+      }
+    }
+
     if (!token) return null;
-    //decode 
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string; username?: string };
     if (!decoded?.id) return null;
-    //check db
+
     const user = await prisma.user.findUnique({ where: { id: decoded.id } });
     return user || null;
   } catch (err) {
@@ -23,4 +31,3 @@ export async function getCurrentUser() {
     return null;
   }
 }
-

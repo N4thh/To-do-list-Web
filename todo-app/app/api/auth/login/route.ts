@@ -46,8 +46,9 @@ export async function POST(request: NextRequest) {
         
         //set cookie then return token 
         const res = NextResponse.json(
-            {message: "Login Successful!"}, 
-            {status: 201}
+            {message: "Login Successful!", token : token},
+            {status: 201},
+         
         );
         res.cookies.set ("authToken", token,{
             httpOnly: true,         //cookie cant read by jvs in browser

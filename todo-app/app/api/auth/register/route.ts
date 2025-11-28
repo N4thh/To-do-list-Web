@@ -70,11 +70,19 @@ export async function POST(request: NextRequest) {
             "Registration successful"
         );
 
-    } catch (error) {
-        console.error("Registration error:", error); 
+    } catch (error: unknown) {
+        console.error("Error creating task:", error);
+
+        if (error instanceof Error) {
+            return NextResponse.json(
+                { error: `Add task failed: ${error.message}` },
+                { status: 500 }
+            );
+        }
+
         return NextResponse.json(
-            { error: "An error occurred during registration" },
+            { error: "Add task failed: unknown error" },
             { status: 500 }
         );
-    }
+}
 }

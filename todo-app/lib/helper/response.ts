@@ -23,6 +23,13 @@ export const success = (data: unknown = null, message: string = "Success") =>
 export const created = (data: unknown = null, message: string = "Created") =>
     jsonResponse({ status: "created", data, message }, 201);
 
+export const updated = (data: unknown = null, message: string = "Updated") =>
+    jsonResponse({ status: "updated", data, message}, 200);
+
+export const deleted = (data: unknown = null, message: string = "Deleted") =>
+    jsonResponse({ status: "Deleted", data, message}, 200);
+
+
 // ERROR RESPONSES
 export const error = (message: string = "Error", code: number = 400) => 
     jsonResponse({ status: "error", message }, code);
