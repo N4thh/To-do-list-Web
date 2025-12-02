@@ -17,32 +17,26 @@ export default function AddTask (){
     const [open, setOpen] = useState (false); 
     
     const handleChange = (e: React.ChangeEvent <HTMLInputElement | HTMLTextAreaElement>) =>{
-        const {name, value} = e.target; 
+        const {name, value} = e.target;
         SetFormData(prev =>({
-            ...prev, 
+            ...prev,
             [name] : value
         }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault(); 
+        e.preventDefault();
         setError ('');
         setSuccess ('');
 
         setIsLoading(true);
         try{
-            const token = localStorage.getItem("authToken"); 
-            if(!token){
-                setError("User is not authenticated");
-                setIsLoading(false); 
-                return;
-            }
             const response = await fetch("/api/tasks",{
-                method: 'POST', 
+                method: 'POST',
                 headers: {
-                    'Content-Type' : 'application/json',
-                    'Authorization' : `Bearer ${token}`
+                    'Content-Type' : 'application/json'
                 },
+                credentials: 'include', // Quan trọng: Gửi cookie kèm theo request
                 body: JSON.stringify(formData)
             });
 
@@ -84,10 +78,23 @@ export default function AddTask (){
                     <div className="flex mt-[2vh]">
                         <h1 className="font-bold">
                             <span className="underline underline-offset-6 decoration-[#F24E1E]">
-                            Add New Ta</span>sk
+                            Add New Task</span>
                         </h1>
-                        <h2 className="ml-auto">Go Back</h2> <br />
+                        <button className="ml-auto cursor-pointer" onClick={() => setOpen(false)}>Go Back</button>
                     </div>
+
+                    {/* Error và Success Messages */}
+                    {error && (
+                        <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                            {error}
+                        </div>
+                    )}
+                    {success && (
+                        <div className="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+                            {success}
+                        </div>
+                    )}
+
                     {/* Data form */}
                     <div className="border shadow-lg border-gray-300 p-4 mt-[3vh]">
                         {/* type */}
