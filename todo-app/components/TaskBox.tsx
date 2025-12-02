@@ -4,7 +4,7 @@ import { Task } from "@prisma/client";
 
 const TaskBox = ({ title, description, priority, status }: Task) => {
   return (
-    <div className="flex border rounded-lg p-2 w-[50vh] gap-1.5">
+    <div className="flex border rounded-lg p-2 w-[50vh] gap-1.5 mt-4">
       {/* click button */}
       <div className="w-1/20 h-[2vh] border">
 

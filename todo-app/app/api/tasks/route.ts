@@ -17,20 +17,20 @@ export async function POST(request:NextRequest) {
         
         const body = await request.json (); 
         const {title, description, priority, status, type, dueDate} = body; 
-
+        
         if( isEmpty(title) || isEmpty(type))
         { return badRequest("All fields are required");}
         
         const newTask = await prisma.task.create({
             data :
             {
-                title : title, 
-                description: description, 
-                priority : priority, 
-                status : status, 
-                type : type, 
-                dueDate : dueDate,
-                userId : user.id
+                title,
+                description,
+                priority,
+                status,
+                type,
+                dueDate: dueDate ? new Date(dueDate) : undefined,
+                userId: user.id
             },  
         });
 

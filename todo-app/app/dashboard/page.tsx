@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import TaskBox from "@/components/TaskBox";
+import AddTask from "@/components/AddTask";
 
 export default async function Dashboard() {
   const user = await getCurrentUser();
@@ -41,7 +42,7 @@ export default async function Dashboard() {
       {/* Navigator bar x Main content */}
       <div className="flex gap-4 h-[80vh] p-4 bg-[#F5F8FF]">
         {/* Navi */}
-        <div className="w-1/5 border-r p-2 rounded-lg bg-[#FF6767]">
+        <div className="w-1/5 p-2 rounded-lg bg-[#FF6767]">
 
         </div>
         {/* Main content */}
@@ -50,13 +51,24 @@ export default async function Dashboard() {
               Welcome back, {user.username}
             </h1>
           <div className=" p-4 h-[90%] border rounded-lg shadow-md border-gray-100">
-            <div>
-              <h1 className="text-[#FF6767] p-2 text-xl">To-Do</h1>
-              {/* add task */}
+
+            <div className="flex p-2">
+              <h1 className="text-[#FF6767]  text-xl">To-Do</h1>
+              {/* add task */}        
+              <AddTask />
+            </div>
+
+            {/* status bar x Count task completed */}
+            <div className=" h-[30%] border rounded-lg">
+              <div>
+
+              </div>
+
               <div>
                 
-              </div>
+              </div>   
             </div>
+
             {/* task */}
             <div>
                 {task.length === 0 ? 
