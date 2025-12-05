@@ -1,11 +1,13 @@
 'use client'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Task } from "@prisma/client";
 
 
 
-export default function AddTask (){ 
+export default function EditTask ({ task }: { task: Task }){ 
     const router = useRouter();
+    
     const [formData, SetFormData] = useState ({
         title :'', 
         description : '', 
@@ -14,12 +16,25 @@ export default function AddTask (){
         type: '', 
         dueDate: '',
     });
-
+    
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [open, setOpen] = useState (false); 
-    
+
+     useEffect(() => {
+        if ( task) {
+            SetFormData({
+                title: task.title || "",
+                description: task.description || "",
+                priority: task.priority || "",
+                status: task.status || "",
+                type: task.type || "",
+                dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : "",  //Changing dueDate from ISO-8601 DateTime to "YYYY-MM-DD"
+            });
+        }
+    }, [open, task]);
+
     const handleChange = (e: React.ChangeEvent <HTMLInputElement | HTMLTextAreaElement>) =>{
         const {name, value} = e.target; 
         SetFormData(prev =>({
@@ -35,8 +50,8 @@ export default function AddTask (){
 
         setIsLoading(true);
         try{
-            const response = await fetch("/api/tasks",{
-                method: 'POST', 
+            const response = await fetch(`/api/tasks/${task.id}`,{
+                method: 'PUT', 
                 headers: {
                     'Content-Type' : 'application/json',
                 },
@@ -49,31 +64,52 @@ export default function AddTask (){
                 setError(data.message || "Something went wrong");
                 return;
             }
-            setSuccess("Task created successfully!");
-
-            SetFormData({
-            title: '',
-            description: '',
-            priority: '',
-            status: '',
-            type: '',
-            dueDate: '',
-        });
+            setSuccess("Task edited successfully!");
 
             setOpen(false);
             router.refresh();
         }catch(err){
-            console.error("Error creating task:", err);
+            console.error("Error editing task:", err);
             setError("Something went wrong");
         } finally{
             setIsLoading (false);
         }
-
     };
+    const handleDelete  = async (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault (); 
+            setError ('');
+            setSuccess ('');
+
+            setIsLoading(true);
+            try{
+                const response = await fetch (`/api/tasks/${task.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type' : 'application/json', 
+                    },
+                    credentials: 'include'
+                })
+                
+                const data = await response.json(); 
+                if(!response.ok) { 
+                  setError(data.message || "Something went wrong");
+                    return;
+                }
+                setSuccess("Task deleted successfully!");
+                setOpen(false);
+                router.refresh();
+
+            }catch (err){
+                console.error("Error deleting task:", err);
+                setError("Something went wrong")
+            } finally{
+            setIsLoading (false);
+            }
+        };
     return (
         <>
         <button className="ml-auto hover:text-[#F24E1E] transition-colors duration-200 text-[#A1A3AB]" onClick={() => setOpen(true)}>
-            Add Task
+            ...
         </button>
         
         {open && (
@@ -83,7 +119,7 @@ export default function AddTask (){
                     <div className="flex mt-[2vh]">
                         <h1 className="font-bold">
                             <span className="underline underline-offset-6 decoration-[#F24E1E]">
-                            Add New Ta</span>sk
+                            Edit Ta</span>sk
                         </h1>
                         <h2 className="ml-auto underline underline-offset-1" onClick={() => setOpen(false)}>Go Back</h2> <br />
                     </div>
@@ -239,12 +275,19 @@ export default function AddTask (){
                             </textarea>
                         </div>
                     </div>
-                    <button className="border rounded-lg p-2 w-[10vh] mt-[2vh] text-white bg-[#F24E1E]"
-                            onClick={handleSubmit}
-                              disabled={isLoading} >
-                        {isLoading ? "Saving..." : "Done"}
-                    </button>
-                   
+                    <div className="flex">
+                        <button className="border rounded-lg p-2 w-[10vh] mt-[2vh] text-white bg-[#F24E1E]"
+                                onClick={handleSubmit}
+                                disabled={isLoading} >
+                            {isLoading ? "Saving..." : "Done"}
+                        </button>
+
+                        <button className="border rounded-lg p-2 w-[10vh] mt-[2vh] text-white bg-[#F24E1E] ml-auto"
+                                onClick={handleDelete}
+                                disabled = {isLoading}>
+                            {isLoading ? "Deleting..." : "Delete"}
+                        </button>
+                   </div>
                 </div>
             </div>
         )}

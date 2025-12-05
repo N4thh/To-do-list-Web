@@ -1,4 +1,4 @@
-// api/task/[id]/route.ts
+// api/tasks/[id]/route.ts
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -44,7 +44,11 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     if(isEmpty(title) || isEmpty(type)){
         return badRequest ("All fields are required");
     }
-
+    // Changing dueDate ffom "YYYY-MM-DD" to ISO-8601 DateTime
+    let parsedDueDate = null;
+    if (dueDate) {
+        parsedDueDate = new Date(`${dueDate}T00:00:00Z`).toISOString();
+    }
     const updateTask = await prisma.task.update({
         where: {
             id : taskID,
@@ -56,7 +60,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
             priority : priority, 
             status : status , 
             type : type, 
-            dueDate : dueDate,
+            dueDate : parsedDueDate,
         },
     });
 
@@ -84,7 +88,7 @@ export async function DELETE(request: NextRequest, context: {params : Promise <{
 
     Return delete status 
     */
-   const user = getCurrentUser(request.headers); 
+      const user = await getCurrentUser(request.headers); 
    if(!user){
         return new NextResponse ("Don't have permission" , {status: 401})
    }
