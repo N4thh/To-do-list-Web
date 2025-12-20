@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd todo-app && npm install && npm run build",
+  "outputDirectory": "todo-app/.next",
+  "installCommand": "cd todo-app && npm install",
+  "framework": "nextjs"
+}
+
