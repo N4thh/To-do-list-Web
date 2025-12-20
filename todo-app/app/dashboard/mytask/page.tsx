@@ -21,8 +21,6 @@ export default async function MyTaskPage() {
       { updatedAt: "desc" },
     ],
   });
-  
-  type TaskType = Awaited<ReturnType<typeof prisma.task.findMany>>[number];
 
   return (
     <div>
@@ -43,7 +41,7 @@ export default async function MyTaskPage() {
           {tasks.length === 0 ? (
             <p className="p-4 text-gray-500">No task yet</p>
           ) : (
-            tasks.map((task: TaskType) => (
+            tasks.map(task => (
               <TaskBox key={task.id} {...task} />
             ))
           )}
