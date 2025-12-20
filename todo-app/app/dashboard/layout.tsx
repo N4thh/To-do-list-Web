@@ -1,8 +1,9 @@
 import Link from "next/link";
 import LogoutButton from "@/components/LogoutButton";
+import { ReactNode } from "react";
 
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-white text-black">
 
