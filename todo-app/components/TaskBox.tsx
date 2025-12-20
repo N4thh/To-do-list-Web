@@ -16,7 +16,7 @@ const TaskBox = (task: Task) => {
           <div
             className={`w-5 h-5 border-2 rounded-full 
               ${status === "IN_PROGRESS" ? "border-[#0225FF]" :
-                status === "TODO" ? "border-[#F21E1E]" :
+                status === "NOT_STARTED" ? "border-[#F21E1E]" :
                 "border-[#05A301]"}`}
           ></div>
           {/* Info */}
@@ -46,7 +46,7 @@ const TaskBox = (task: Task) => {
                 <span
                   className={`${
                     status === "IN_PROGRESS" ? "text-[#0225FF]"
-                      : status === "TODO"    ? "text-[#F21E1E]"
+                      : status === "NOT_STARTED"    ? "text-[#F21E1E]"
                       : "text-[#05A301]"
                   }`}
                 >

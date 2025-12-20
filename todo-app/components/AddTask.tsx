@@ -190,8 +190,8 @@ export default function AddTask (){
                                         <input className="border rounded-base w-4 h-4 accent-red-500" 
                                         type="radio" 
                                         name="status"
-                                        value = "IN_PROGRESS"
-                                        checked = {formData.status === "IN_PROGRESS"}
+                                        value = "NOT_STARTED"
+                                        checked = {formData.status === "NOT_STARTED"}
                                         onChange={handleChange}
                                         />                    
                                     </div>      
@@ -200,12 +200,12 @@ export default function AddTask (){
                                 <div className="flex items-center ">
                                     <div className="gap-2 flex items-center">                                              
                                         <span className="w-2 h-2 bg-[#0E8DD8] rounded-full inline-block"></span>
-                                        <label>ToDo</label>
+                                        <label>In Progress</label>
                                         <input className="border rounded-base w-4 h-4 accent-[#0E8DD8]" 
                                         type="radio" 
                                         name="status"
-                                        value = "TODO"
-                                        checked = {formData.status === "TODO"}
+                                        value = "IN_PROGRESS"
+                                        checked = {formData.status === "IN_PROGRESS"}
                                         onChange={handleChange}
                                         />                    
                                     </div>      

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Task } from "@prisma/client";
+import { MoreHorizontal } from "lucide-react";
 
 
 
@@ -29,7 +30,7 @@ export default function EditTask ({ task }: { task: Task }){
                 description: task.description || "",
                 priority: task.priority || "",
                 status: task.status || "",
-                type: task.type || "",
+                type: task.typeId || "",
                 dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : "",  //Changing dueDate from ISO-8601 DateTime to "YYYY-MM-DD"
             });
         }
@@ -108,8 +109,10 @@ export default function EditTask ({ task }: { task: Task }){
         };
     return (
         <>
-        <button className="ml-auto hover:text-[#F24E1E] transition-colors duration-200 text-[#A1A3AB]" onClick={() => setOpen(true)}>
-            ...
+        <button
+        className="ml-auto text-[#A1A3AB] hover:text-[#F24E1E] transition-colors duration-200"
+        onClick={() => setOpen(true)}>
+        <MoreHorizontal size={20} />
         </button>
         
         {open && (
@@ -226,8 +229,8 @@ export default function EditTask ({ task }: { task: Task }){
                                         <input className="border rounded-base w-4 h-4 accent-red-500" 
                                         type="radio" 
                                         name="status"
-                                        value = "IN_PROGRESS"
-                                        checked = {formData.status === "IN_PROGRESS"}
+                                        value = "NOT_STARTED"
+                                        checked = {formData.status === "NOT_STARTED"}
                                         onChange={handleChange}
                                         />                    
                                     </div>      
@@ -236,12 +239,12 @@ export default function EditTask ({ task }: { task: Task }){
                                 <div className="flex items-center ">
                                     <div className="gap-2 flex items-center">                                              
                                         <span className="w-2 h-2 bg-[#0E8DD8] rounded-full inline-block"></span>
-                                        <label>ToDo</label>
+                                        <label>In Progress</label>
                                         <input className="border rounded-base w-4 h-4 accent-[#0E8DD8]" 
                                         type="radio" 
                                         name="status"
-                                        value = "TODO"
-                                        checked = {formData.status === "TODO"}
+                                        value = "IN_PROGRESS"
+                                        checked = {formData.status === "IN_PROGRESS"}
                                         onChange={handleChange}
                                         />                    
                                     </div>      

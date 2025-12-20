@@ -21,6 +21,11 @@ export async function POST(request:NextRequest) {
         if( isEmpty(title) || isEmpty(type))
         { return badRequest("All fields are required");}
         
+        const taskType = await prisma.taskType.upsert ({ 
+            where: {name: type}, 
+            update : {},
+            create : {name: type},
+        })
         const newTask = await prisma.task.create({
             data :
             {
@@ -28,7 +33,7 @@ export async function POST(request:NextRequest) {
                 description,
                 priority,
                 status,
-                type,
+                typeId: taskType.id,
                 dueDate: dueDate ? new Date(dueDate) : undefined,
                 userId: user.id
             },  
@@ -39,7 +44,7 @@ export async function POST(request:NextRequest) {
             description : newTask.description, 
             priority : newTask.priority, 
             status : newTask.status, 
-            type : newTask.type, 
+            type :  taskType.name, 
             dueDate : newTask.dueDate, 
         })
         

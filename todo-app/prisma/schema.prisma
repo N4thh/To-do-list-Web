@@ -17,38 +17,30 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  tasks      Task[]
-  categories Category[]
+  tasks     Task[]
 }
 
-model Category {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  color     String?
-  userId    String?  @db.ObjectId
-  isSystem  Boolean  @default(false)
-  createdAt DateTime @default(now())
-
-  user  User?  @relation(fields: [userId], references: [id])
+model TaskType {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String @unique
   tasks Task[]
 }
 
 model Task {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
-  priority    Priority  @default(MEDIUM)
-  status      Status    @default(TODO)
-  type        TaskType
-  categoryId  String?   @db.ObjectId
-  userId      String    @db.ObjectId
+  priority    Priority    @default(MEDIUM)
+  status      Status      @default(NOT_STARTED)
+  typeId      String      @db.ObjectId
+  userId      String      @db.ObjectId
   dueDate     DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user     User      @relation(fields: [userId], references: [id])
-  category Category? @relation(fields: [categoryId], references: [id])
+  user User      @relation(fields: [userId], references: [id])
+  type TaskType  @relation(fields: [typeId], references: [id])
 }
 
 enum Priority {
@@ -58,12 +50,7 @@ enum Priority {
 }
 
 enum Status {
-  TODO
+  NOT_STARTED
   IN_PROGRESS
   DONE
-}
-
-enum TaskType {
-  MY_PROJECT
-  TEAM
 }

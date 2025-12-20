@@ -34,6 +34,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     const { id: taskID } = await context.params;
     const exisTask = await prisma.task.findUnique ({
         where : {id : taskID},
+        include: { type: true },
     });
     if(!exisTask){
         return badRequest("Task not found");
@@ -44,11 +45,18 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     if(isEmpty(title) || isEmpty(type)){
         return badRequest ("All fields are required");
     }
+
+    const taskType = await prisma.taskType.upsert({
+        where: {name : type},
+        update: {},
+        create: {name :type},
+    })
     // Changing dueDate ffom "YYYY-MM-DD" to ISO-8601 DateTime
     let parsedDueDate = null;
     if (dueDate) {
         parsedDueDate = new Date(`${dueDate}T00:00:00Z`).toISOString();
     }
+
     const updateTask = await prisma.task.update({
         where: {
             id : taskID,
@@ -59,7 +67,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
             description : description, 
             priority : priority, 
             status : status , 
-            type : type, 
+            typeId : taskType.id, 
             dueDate : parsedDueDate,
         },
     });
@@ -69,7 +77,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
         description : updateTask.description, 
         priority : updateTask.priority, 
         status : updateTask.status, 
-        type : updateTask.type, 
+        type :  taskType.name, 
         dueDate : updateTask.dueDate,
     });
 
@@ -96,6 +104,7 @@ export async function DELETE(request: NextRequest, context: {params : Promise <{
    const {id: TaskID} = await context.params;  //Next.JS app router: params now is Promise so need to await it
    const exisTask = await prisma.task.findUnique({
     where: {id: TaskID},
+    include: { type: true },
    });
 
    if(!exisTask){
